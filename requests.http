@@ -1,0 +1,25 @@
+### All nodes
+GET http://localhost:8080/api/nodes
+
+### Filter by district
+GET http://localhost:8080/api/nodes?district=Kallio
+
+### Existing node
+GET http://localhost:8080/api/nodes/1
+
+### Missing node: deliberate latent NPE in the baseline
+GET http://localhost:8080/api/nodes/999
+
+### Signals: some payloads are null
+GET http://localhost:8080/api/nodes/1/signals
+
+### Register a node
+POST http://localhost:8080/api/nodes
+Content-Type: application/json
+
+{
+  "codename": "LUMEN-9",
+  "district": "Ruoholahti",
+  "alias": null,
+  "operator": "Aster Grid"
+}
