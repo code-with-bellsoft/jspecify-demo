@@ -1,6 +1,5 @@
 package dev.cyberjar.jspecify.service;
 
-import dev.cyberjar.jspecify.domain.NewNode;
 import dev.cyberjar.jspecify.domain.Node;
 import dev.cyberjar.jspecify.domain.Signal;
 import dev.cyberjar.jspecify.repository.NodeRepository;
@@ -29,8 +28,18 @@ public class NodeService {
         return repository.findByDistrict(district);
     }
 
-    public Node register(NewNode node) {
-        return repository.insert(node);
+    public Node register(
+            String codename,
+            String district,
+            String alias,
+            String operator
+    ) {
+        return repository.insert(
+                codename,
+                district,
+                alias,
+                operator
+        );
     }
 
     public String displayName(Node node) {

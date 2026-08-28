@@ -1,6 +1,5 @@
 package dev.cyberjar.jspecify.api;
 
-import dev.cyberjar.jspecify.domain.NewNode;
 import dev.cyberjar.jspecify.domain.Node;
 import dev.cyberjar.jspecify.domain.Signal;
 import dev.cyberjar.jspecify.service.NodeService;
@@ -61,12 +60,10 @@ public class NodeController {
             @Valid @RequestBody RegisterNodeRequest request) {
 
         Node created = service.register(
-                new NewNode(
-                        request.codename(),
-                        request.district(),
-                        request.alias(),
-                        request.operator()
-                )
+                request.codename(),
+                request.district(),
+                request.alias(),
+                request.operator()
         );
 
         return ResponseEntity
