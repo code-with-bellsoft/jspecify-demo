@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.jspecify.annotations.Nullable;
 
 import java.net.URI;
 import java.util.List;
@@ -24,7 +25,7 @@ public class NodeController {
 
     @GetMapping
     public List<NodeResponse> nodes(
-            @RequestParam(required = false) String district) {
+            @RequestParam(required = false) @Nullable String district) {
 
         return service.search(district)
                 .stream()
@@ -36,13 +37,17 @@ public class NodeController {
     public NodeResponse node(@PathVariable long id) {
         Node node = service.find(id);
 
-        // Deliberate baseline bug for the JSpecify demo:
-        // find(id) can return null, but plain Java does not express that contract.
+        if (node == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Node not found"
+            );
+        }
         return NodeResponse.from(node);
     }
 
     @GetMapping("/{id}/signals")
-    public List<Signal<String>> signals(@PathVariable long id) {
+    public List<Signal<@Nullable String>> signals(@PathVariable long id) {
         Node node = service.find(id);
 
         if (node == null) {

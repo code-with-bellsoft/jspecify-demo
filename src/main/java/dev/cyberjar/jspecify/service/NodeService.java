@@ -4,6 +4,7 @@ import dev.cyberjar.jspecify.domain.Node;
 import dev.cyberjar.jspecify.domain.Signal;
 import dev.cyberjar.jspecify.repository.NodeRepository;
 import org.springframework.stereotype.Service;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -16,11 +17,11 @@ public class NodeService {
         this.repository = repository;
     }
 
-    public Node find(long id) {
+    public @Nullable Node find(long id) {
         return repository.findById(id);
     }
 
-    public List<Node> search(String district) {
+    public List<Node> search(@Nullable String district) {
         if (district == null || district.isBlank()) {
             return repository.findAll();
         }
@@ -31,8 +32,8 @@ public class NodeService {
     public Node register(
             String codename,
             String district,
-            String alias,
-            String operator
+            @Nullable String alias,
+            @Nullable String operator
     ) {
         return repository.insert(
                 codename,
@@ -50,7 +51,7 @@ public class NodeService {
         return node.codename();
     }
 
-    public List<Signal<String>> signals(Node node) {
+    public List<Signal<@Nullable String>> signals(Node node) {
         return List.of(
                 new Signal<>("public-alias", node.alias()),
                 new Signal<>("operator", node.operator()),

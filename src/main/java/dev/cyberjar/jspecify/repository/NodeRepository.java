@@ -3,6 +3,7 @@ package dev.cyberjar.jspecify.repository;
 
 import dev.cyberjar.jspecify.domain.Node;
 import dev.cyberjar.jspecify.domain.NodeStatus;
+import org.jspecify.annotations.Nullable;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public class NodeRepository {
         this.jdbc = jdbc;
     }
 
-    public Node findById(long id) {
+    public @Nullable Node findById(long id) {
         return jdbc.sql("""
                         SELECT id, codename, district, alias, operator_name,
                                status, last_seen, decommissioned_at
@@ -63,8 +64,8 @@ public class NodeRepository {
     public Node insert(
             String codename,
             String district,
-            String alias,
-            String operator
+            @Nullable String alias,
+            @Nullable String operator
     ) {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -132,7 +133,7 @@ public class NodeRepository {
         );
     }
 
-    private Instant nullableInstant(Timestamp timestamp) {
+    private @Nullable Instant nullableInstant(@Nullable Timestamp timestamp) {
         return timestamp == null ? null : timestamp.toInstant();
     }
 }

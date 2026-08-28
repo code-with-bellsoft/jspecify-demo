@@ -1,6 +1,7 @@
 package dev.cyberjar.jspecify.api;
 
 import dev.cyberjar.jspecify.domain.Node;
+import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 
@@ -8,11 +9,11 @@ public record NodeResponse(
         long id,
         String codename,
         String district,
-        String alias,
-        String operator,
+        @Nullable String alias,
+        @Nullable String operator,
         String status,
         Instant lastSeen,
-        Instant decommissionedAt
+        @Nullable Instant decommissionedAt
 ) {
 
     public static NodeResponse from(Node node) {
