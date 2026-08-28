@@ -1,7 +1,6 @@
 package dev.cyberjar.jspecify.repository;
 
 
-import dev.cyberjar.jspecify.domain.NewNode;
 import dev.cyberjar.jspecify.domain.Node;
 import dev.cyberjar.jspecify.domain.NodeStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -61,33 +60,38 @@ public class NodeRepository {
                 .list();
     }
 
-    public Node insert(NewNode node) {
+    public Node insert(
+            String codename,
+            String district,
+            String alias,
+            String operator
+    ) {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbc.sql("""
-                        INSERT INTO node (
-                            codename,
-                            district,
-                            alias,
-                            operator_name,
-                            status,
-                            last_seen,
-                            decommissioned_at
-                        )
-                        VALUES (
-                            :codename,
-                            :district,
-                            :alias,
-                            :operator,
-                            'ACTIVE',
-                            CURRENT_TIMESTAMP,
-                            NULL
-                        )
-                        """)
-                .param("codename", node.codename())
-                .param("district", node.district())
-                .param("alias", node.alias())
-                .param("operator", node.operator())
+            INSERT INTO node (
+                codename,
+                district,
+                alias,
+                operator_name,
+                status,
+                last_seen,
+                decommissioned_at
+            )
+            VALUES (
+                :codename,
+                :district,
+                :alias,
+                :operator,
+                'ACTIVE',
+                CURRENT_TIMESTAMP,
+                NULL
+            )
+            """)
+                .param("codename", codename)
+                .param("district", district)
+                .param("alias", alias)
+                .param("operator", operator)
                 .update(keyHolder, "id");
 
         Number generatedId = Objects.requireNonNull(
